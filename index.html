@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<!-- Name
+····|File Description -->
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Interactive Dynamic Times Table</title>
+        <!-- stylesheets-->
+        <link rel="stylesheet" href="styles.css">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+        <!-- scripts -->
+        <script>
+            function generateTable() {
+                // Get input values
+                let cMin = parseInt(document.getElementById('colmin').value);
+                let cMax = parseInt(document.getElementById('colmax').value);
+                let rMin = parseInt(document.getElementById('rowmin').value);
+                let rMax = parseInt(document.getElementById('rowmax').value);
+
+                // Validate input values
+                if (isNaN(cMin) || isNaN(cMax) || isNaN(rMin) || isNaN(rMax)) {
+                    displayErrorMessage('Please enter valid numbers.');
+                    return;
+                }
+                if (cMin > cMax || rMin > rMax) {
+                    displayErrorMessage('Start value cannot be greater than end value.');
+                    return;
+                }
+
+                // Create table
+                let table = '<table class="table table-bordered striped-table">';
+                table += '<tr><th></th>'; // Start the first row with an empty cell for the top-left corner
+
+                for (let i = cMin; i <= cMax; i++) {
+                    table += `<th>${i}</th>`; // Add the column headers
+                }
+                table += '</tr>'; // Close the header row
+
+                for (let j = rMin; j <= rMax; j++) {
+                    table += `<tr><th>${j}</th>`; // Start the row with a header cell
+
+                    for (let i = cMin; i <= cMax; i++) {
+                        table += `<td>${i * j}</td>`; // Add the multiplication result cells
+                    }
+
+                    table += '</tr>'; // Close the row
+                }
+
+                table += '</table>';
+                document.getElementById('table-container').innerHTML = table;
+            }
+
+            function displayErrorMessage(message) {
+                // Display error message in place of the table
+                document.getElementById('table-container').innerHTML = `<p class="error-message">${message}</p>`;
+            }
+        </script>
+
+    </head>
+    <body>
+        <div class="jumbotron" >
+            <div class="container">
+                <h1>Welcome to Nabil's Interactive Dynamic Times Table!</h1>
+                <p>This is an automated dynamic times table generator that will automatically make the times table of your dreams! Simply enter the minimum and maximum values for both the columns and rows of your choice and press the "Generate" button to generate the table!.</p>
+            </div>
+        </div>
+        
+        <div class="container">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-md-4" for="rowmin">Row Minimum</label>
+                    <div class="col-md-4">
+                        <input type="number" class="form-control" id="rowmin" placeholder="Enter a whole number">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4" for="rowmax">Row Maximum</label>
+                    <div class="col-md-4">
+                        <input type="number" class="form-control" id="rowmax" placeholder="Enter a whole number">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4" for="colmin">Column Minimum</label>
+                    <div class="col-md-4">
+                        <input type="number" class="form-control" id="colmin" placeholder="Enter a whole number">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4" for="colmax">Column Maximum</label>
+                    <div class="col-md-4">
+                        <input type="number" class="form-control" id="colmax" placeholder="Enter a whole number">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary" onclick="generateTable()">Generate</button>
+                    </div>
+                </div>
+            </form>
+            <div class="table-container" id="table-container"></div>
+        </div>
+    </body>
+</html>
+
